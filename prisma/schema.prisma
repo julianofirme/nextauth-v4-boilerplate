@@ -6,22 +6,26 @@ datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
-
 model Account {
-  id                 String    @id @default(cuid())
-  userId             String
-  providerType       String
-  providerId         String
-  providerAccountId  String
-  refreshToken       String?
-  accessToken        String?
-  accessTokenExpires DateTime?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  user               User      @relation(fields: [userId], references: [id])
+  id                String    @id @default(cuid())
+  userId            String
+  providerType      String?
+  provider          String
+  type              String
+  providerAccountId String
+  refreshToken      String?
+  access_token      String?
+  token_type        String?
+  id_token          String?
+  scope             String?
+  expires_at        Int?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  user              User      @relation(fields: [userId], references: [id])
 
-  @@unique([providerId, providerAccountId])
+  @@unique([provider, providerAccountId])
 }
+
 
 model Session {
   id           String   @id @default(cuid())
