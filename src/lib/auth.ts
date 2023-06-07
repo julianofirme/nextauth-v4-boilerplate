@@ -3,8 +3,8 @@ import { PrismaClient } from '@prisma/client';
 import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 function getGoogleCredentials() {
-  const clientId = process.env.GOOGLE_CLIEND_ID
-  const clientSecret = process.env.GOOGLE_CLIEND_SECRET
+  const clientId = process.env.GOOGLE_CLIENT_ID
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET
 
   if (!clientId || clientId.length === 0) {
     throw new Error("Missins GOOGLE_CLIENT_ID")
@@ -38,22 +38,29 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      const dbUser = await prisma.user.findUnique({ where: { id: user?.id } });
-
-      if (!dbUser) {
-        if (user) {
-          token.id = user!.id;
+      if (user) {
+        const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+    
+        if (!dbUser) {
+          const newUser = await prisma.user.create({
+            data: {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              image: user.image,
+            },
+          });
+    
+          return {
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+            image: newUser.image,
+          };
         }
-
-        return token;
       }
-
-      return {
-        id: dbUser.id,
-        name: dbUser.name,
-        email: dbUser.email,
-        picture: dbUser.image,
-      };
+    
+      return token;
     },
     async session({ session, token }) {
       if (token) {
