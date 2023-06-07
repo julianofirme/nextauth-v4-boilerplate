@@ -1,7 +1,7 @@
 "use client";
 
 import GoogleSVG from "@/components/GoogleSvgapp";
-import LoginButton from "@/components/LoginButtonapp";
+import LoginButton from "@/components/Buttonapp";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 

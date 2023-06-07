@@ -3,12 +3,12 @@
 import { Loader2 } from "lucide-react";
 import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from "react";
 
-interface LoginButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  isLoading: boolean;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  isLoading?: boolean;
   children: ReactNode;
 }
 
-const LoginButton: FunctionComponent<LoginButtonProps> = ({
+const Button: FunctionComponent<ButtonProps> = ({
   isLoading,
   children,
   ...props
@@ -21,4 +21,4 @@ const LoginButton: FunctionComponent<LoginButtonProps> = ({
   );
 };
 
-export default LoginButton;
+export default Button;

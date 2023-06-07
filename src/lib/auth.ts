@@ -1,7 +1,8 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
 import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { prisma } from '../server/prisma';
+
 function getGoogleCredentials() {
   const clientId = process.env.GOOGLE_CLIENT_ID
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET
@@ -19,8 +20,6 @@ function getGoogleCredentials() {
     clientSecret
   }
 }
-
-const prisma = new PrismaClient()
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -73,7 +72,7 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     redirect() {
-      return '/'
+      return '/dashboard'
     }
   },
 }
